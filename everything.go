@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -20,7 +22,8 @@ func main() {
 	// fFlowControl()
 	// gLoops()
 	// hHTTPRequests()
-	iRESTapi()
+	// iRESTapi()
+	Mapper()
 }
 
 func aVariables() {
@@ -145,7 +148,6 @@ type resultBody struct {
 	Status      string
 	Predictions []obj
 }
-
 type requestBody struct {
 	Text []string `json:"text"`
 }
@@ -186,4 +188,69 @@ func iRESTapi() {
 		return c.String(http.StatusOK, "Hello World!")
 	})
 	e.Logger.Fatal(e.Start(":1323"))
+}
+
+// experimental things
+func qHTTPRequests(x string) (pos float32) {
+	url := "http://localhost:5000/model/predict"
+
+	//preparing the object
+	reqobj := requestBody{}
+	reqobj.Text = append(reqobj.Text, x)
+
+	//json conversion
+	data, _ := json.Marshal(reqobj)
+
+	//convert to byte[]
+	payload := strings.NewReader(string(data))
+	req, _ := http.NewRequest("POST", url, payload)
+	req.Header.Add("content-type", "application/json")
+
+	res, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer res.Body.Close()
+
+	body, _ := ioutil.ReadAll(res.Body)
+
+	var finobj resultBody
+	json.Unmarshal([]byte(body), &finobj)
+
+	fmt.Println(finobj.Predictions)
+
+	return finobj.Predictions[0].Positive
+}
+
+func Mapper() {
+	//create object of HTTP server
+	e := echo.New()
+
+	//add request handler for route
+	e.GET("/map", func(c echo.Context) error {
+
+		//input paragraph from query params
+		str := c.QueryParam("str")
+		//split sentences by using dot to seperate them
+		sentences := strings.Split(str, ".")
+		//create a hash map for each sentence and the sentiment value in float
+		mapping := map[string]float32{}
+
+		for _, sentence := range sentences {
+			mapping[sentence] = qHTTPRequests(sentence)
+		}
+
+		fmt.Println(mapping)
+
+		//encode the mapping in bytes
+		buf := new(bytes.Buffer)
+		encoder := gob.NewEncoder(buf)
+		encoder.Encode(mapping)
+
+		//return bytes in http response
+		return c.Blob(http.StatusOK, "application/octet-stream", buf.Bytes())
+	})
+
+	e.Logger.Fatal(e.Start(":1232"))
 }
