@@ -143,13 +143,23 @@ type resultBody struct {
 	Predictions []obj
 }
 
+type requestBody struct {
+	Text []string `json:"text"`
+}
+
 func hHTTPRequests() {
 	url := "http://localhost:5000/model/predict"
 
-	payload := strings.NewReader("{\n\t\"text\": [\n\t\t\"Kubernetes is an great orchestration service.\",\n\t\t\"Uber is not the best taxi service.\"\n\t]\n}")
+	//preparing the object
+	reqobj := requestBody{}
+	reqobj.Text = append(reqobj.Text, "Kubernetes is a great orchestration service", "Uber is not the best taxi service")
 
+	//json conversion
+	data, _ := json.Marshal(reqobj)
+
+	//convert to byte[]
+	payload := strings.NewReader(string(data))
 	req, _ := http.NewRequest("POST", url, payload)
-
 	req.Header.Add("content-type", "application/json")
 
 	res, err := http.DefaultClient.Do(req)
