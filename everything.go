@@ -1,15 +1,23 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
 	fmt.Println("Hello World")
-	aVariables()
-	cTypes()
-	dComplexTypes()
+	// aVariables()
+	// cTypes()
+	// dComplexTypes()
+	// eWriteToFile()
+	// fFlowControl()
+	// gLoops()
+	hHTTPRequests()
 }
 
 func aVariables() {
@@ -105,4 +113,56 @@ func fFlowControl() {
 		fmt.Println("Default case is optional")
 	}
 
+}
+
+func gLoops() {
+	for x := 0; x < 5; x++ {
+		fmt.Println("Print 5 times")
+	}
+
+	// You can use range to iterate over an array, a slice, a string, a map, or a channel.
+	// range returns one (channel) or two values (array, slice, string and map).
+
+	for key, value := range map[string]int{"one": 1, "two": 2, "three": 3} {
+		// for each pair in the map, print key and value
+		fmt.Printf("key=%s, value=%d\n", key, value)
+	}
+	// If you only need the value, use the underscore as the key
+	for _, name := range []string{"Bob", "Bill", "Joe"} {
+		fmt.Printf("Hello, %s\n", name)
+	}
+}
+
+//structure for unmarshalling json
+type obj struct {
+	Positive float32
+	Negative float32
+}
+type resultBody struct {
+	Status      string
+	Predictions []obj
+}
+
+func hHTTPRequests() {
+	url := "http://localhost:5000/model/predict"
+
+	payload := strings.NewReader("{\n\t\"text\": [\n\t\t\"Kubernetes is an great orchestration service.\",\n\t\t\"Uber is not the best taxi service.\"\n\t]\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/json")
+
+	res, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer res.Body.Close()
+
+	body, _ := ioutil.ReadAll(res.Body)
+
+	var finobj resultBody
+	json.Unmarshal([]byte(body), &finobj)
+
+	fmt.Println(finobj.Predictions)
 }
