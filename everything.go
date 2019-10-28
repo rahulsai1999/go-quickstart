@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/labstack/echo"
 )
 
 func main() {
@@ -17,7 +19,8 @@ func main() {
 	// eWriteToFile()
 	// fFlowControl()
 	// gLoops()
-	hHTTPRequests()
+	// hHTTPRequests()
+	iRESTapi()
 }
 
 func aVariables() {
@@ -175,4 +178,12 @@ func hHTTPRequests() {
 	json.Unmarshal([]byte(body), &finobj)
 
 	fmt.Println(finobj.Predictions)
+}
+
+func iRESTapi() {
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello World!")
+	})
+	e.Logger.Fatal(e.Start(":1323"))
 }
