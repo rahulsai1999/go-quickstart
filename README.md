@@ -8,3 +8,8 @@ A quickstart for Go-lang with all the necessary code and comments
 4. Complex Datatypes
 5. File Handling
 6. Flow Control (Conditionals)
+
+```
+go build -o .\bin\x.exe .\src\everything.go
+.\bin\x.exe
+```
