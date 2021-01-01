@@ -2,7 +2,8 @@ package src
 
 import "fmt"
 
-func cTypes() {
+//Types -> Generic Types in Golang
+func Types() {
 	// datatypes available in Go
 	str := "Learn Go!"
 	str2 := `A raw string can include
@@ -19,7 +20,8 @@ func cTypes() {
 	fmt.Println(str, str2, g, f, c, u, pi, n)
 }
 
-func dComplexTypes() {
+//ComplexTypes -> Complex Types in Golang
+func ComplexTypes() {
 	//complex datatypes in Go
 
 	//arrays (fixed size)
