@@ -7,12 +7,14 @@ import (
 
 func main() {
 	fmt.Println("Hello World")
+
+	// comment and uncomment to view the working of the below functions
+
 	src.Variables()
-	// cTypes()
-	// dComplexTypes()
-	// eWriteToFile()
-	// fFlowControl()
-	// gLoops()
-	// hHTTPRequests()
-	// iRESTapi()
+	// src.Types()
+	// src.ComplexTypes()
+	// src.WriteToFile()
+	// src.FlowControl()
+	// src.Loops()
+	// src.RESTapi()
 }
