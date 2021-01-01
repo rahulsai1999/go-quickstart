@@ -23,7 +23,8 @@ type requestBody struct {
 	Text []string `json:"text"`
 }
 
-func hHTTPRequests() {
+//HTTPRequests -> HTTP Requests using the network library
+func HTTPRequests() {
 	url := "http://localhost:5000/model/predict"
 
 	//preparing the object
@@ -53,7 +54,8 @@ func hHTTPRequests() {
 	fmt.Println(finobj.Predictions)
 }
 
-func iRESTapi() {
+//RESTapi -> starting a web server using Labstack's Echo
+func RESTapi() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello World!")
@@ -61,8 +63,8 @@ func iRESTapi() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-// experimental things
-func qHTTPRequests(x string) (pos float32) {
+//HTTPRequestWithReturn -> http request with returns
+func HTTPRequestWithReturn(x string) (pos float32) {
 	url := "http://localhost:5000/model/predict"
 
 	//preparing the object
