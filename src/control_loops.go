@@ -2,7 +2,8 @@ package src
 
 import "fmt"
 
-func fFlowControl() {
+// FlowControl -> flow control explained
+func FlowControl() {
 	if 5 > 3 {
 		fmt.Println("True in if clause")
 	} else if 3 > 2 {
@@ -25,7 +26,8 @@ func fFlowControl() {
 
 }
 
-func gLoops() {
+// Loops -> examples for loops in Golang
+func Loops() {
 	for x := 0; x < 5; x++ {
 		fmt.Println("Print 5 times")
 	}
