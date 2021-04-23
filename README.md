@@ -25,6 +25,8 @@ A quickstart for Go-lang with all the necessary code and comments
 ## Go Modules
 
 - Go Modules allows us to restructure our code easily
+- For initializing a new project - `go mod init <project-name>`
+- For installing dependencies - `go get -u <dependency>`
 - `package <folder-name>` inside the file should match the parent folder
 - inside the root folder, make a file main.go with `package main` to run the functions
 - Names of **Exported functions** have to start in uppercase.
